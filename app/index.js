@@ -1,7 +1,5 @@
 //app/index.js
 var http = require('http');
-var L = require('leaflet-headless');
-var coloring = require('./coloring');
 var fs = require ('fs');
 var url = require('url');
 var port = process.env.PORT || 5000;

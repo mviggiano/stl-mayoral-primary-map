@@ -10,9 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "pg": "4.x",
-    "leaflet-headless": ">=0.0.0",
-    "leaflet-ajax": "2.1.0"
+    "pg": "4.x"
   },
   "repository": {
     "type": "git",
