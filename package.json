@@ -1,7 +1,7 @@
 {
   "name": "stl-mayoral-primary-map",
   "version": "1.0.0",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Beep boop.",
   "engines": {
     "node": "6.10.0"
   },
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "pg": "4.x",
-    "ejs": "2.4.1",
-    "express": "4.13.3"
+    "leaflet-headless": ">=0.0.0",
+    "leaflet-ajax": "2.1.0"
   },
   "repository": {
     "type": "git",
@@ -20,8 +20,8 @@
   },
   "keywords": [
     "node",
-    "heroku",
-    "express"
+    "heroku"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "author": "Matt Viggiano"
 }
