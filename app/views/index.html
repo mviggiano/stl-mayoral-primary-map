@@ -6,7 +6,22 @@
        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
        <style>
-        #mapid {height: 600px; width: 60%;}
+        #mapid {
+            height: 600px; 
+            width: 60%;
+        }
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
        </style>
    </head>
    
@@ -21,10 +36,10 @@
     }).addTo(myMap);
 
     function getColor(win) {
-        return  win === "AF" ?  "#99000d" :
-                win === "LR" ?  "#005a32" :
-                win === "TJ" ?  "#084594" :
-                win === "LK" ?  "#8c2d04" :
+        return  win === "AF" ?  "#df65b0" :
+                win === "LR" ?  "#74c476" :
+                win === "TJ" ?  "#6baed6" :
+                win === "LK" ?  "#fd8d3c" :
                                 "#525252";
     }
 
@@ -52,16 +67,74 @@
             fillOpacity: 0.7
         };
     }
-    var geojsonLayer = new L.GeoJSON();
-    geojsonLayer.addTo(myMap);
+
+    var geojsonLayer;
+
+    function onMouseOver(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+    }
+
+    function onMouseOut(e) {
+        geojsonLayer.resetStyle(e.target);
+        info.update();
+    }
+
+    function onClick(e) {
+        myMap.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: onMouseOver,
+            mouseout: onMouseOut,
+            click: onClick
+        });
+    }
+
+    var info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
+
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (props) {
+        this._div.innerHTML = '<h4>St. Louis Mayoral Primary Results</h4>' +  (props ?
+            '<b> Ward ' + props.WARD + '</b><br /> Antonio French: ' + props.AF + '%</b><br /> Lewis Reed: ' + props.LR + '%</b><br /> Tishaura Jones: ' + props.TJ + '%</b><br /> Lyda Krewson: ' + props.LK + '%'
+            : 'Hover over a ward');
+    };
+
+    info.addTo(myMap);
+
+    var gjdata = [];
     $.ajax({
         dataType: "json",
         url: "map.geojson",
         success: function(data) {
-            $(data.features).each(function(key, data) {
-                geojsonLayer.addData(data);
-                geojsonLayer.setStyle(style);
-            });
+            console.info(data);
+            gjdata = data;
+            geojsonLayer = L.geoJson(gjdata, {
+                style: style,
+                onEachFeature: onEachFeature
+            }).addTo(myMap);
+            // $(data.features).each(function(key, data) {
+            //     geojsonLayer.addData(data);
+            //     geojsonLayer.setStyle(style);
+            // });
         }
     });
    </script>

@@ -4,7 +4,7 @@ module.exports = {
 	candidateSupport: function() {
 		var colorPalette = [];
 		if (candidate === "AF") {
-			colorPalette = ["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d"];
+			colorPalette = ["#f7f4f9", "#e7e1ef", "#d4b9da", "#c994c7", "#df65b0", "#e7298a", "#ce1256", "#91003f"];
 		} else if (candidate ===  "LR") {
 			colorPalette = ["#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#005a32"];
 		} else if (candidate === "TJ") {
