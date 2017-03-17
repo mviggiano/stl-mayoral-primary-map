@@ -1,4 +1,4 @@
-// var obj = window.api.mapLayer._layers;
+// This is likely getting phased out - going to restructure the JS so as to not need this file.
 
 module.exports = {
 	candidateSupport: function() {

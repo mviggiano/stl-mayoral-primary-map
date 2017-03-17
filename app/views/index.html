@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Sample Page</title>
+      <title>St. Louis Mayoral Primary - March 7, 2017</title>
        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -29,6 +29,8 @@
         <div id="mapid"></div>
    </body>
    <script>
+
+    // Build the map. 
     var myMap = L.map('mapid').setView([38.6270, -90.1994], 11);
     L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibXZpZ2dpYW5vIiwiYSI6ImNqMGJ6YnU1dTAzaHEzMnF2MjBqZjdrZmcifQ.otsSJX0sN7PyhKAZaxbZyA', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -44,6 +46,7 @@
                                 "#525252";
     }
 
+    // Color palettes by candidate.
     function getColorPalette(candidate) {
         if (candidate === "AF") {
             return ["#f7f4f9", "#e7e1ef", "#d4b9da", "#c994c7", "#df65b0", "#e7298a", "#ce1256", "#91003f"];
@@ -82,6 +85,7 @@
         };
     }
 
+    // WIP - intended to be used to support multiple views displaying candidate vote percentage by ward.
     function styleByCandidate(feature) {
         if (candidate === "AF") {
             colorPalette = ["#f7f4f9", "#e7e1ef", "#d4b9da", "#c994c7", "#df65b0", "#e7298a", "#ce1256", "#91003f"];
@@ -117,6 +121,7 @@
 
     var geojsonLayer;
 
+    // Feature mouseover event
     function onMouseOver(e) {
         var layer = e.target;
 
@@ -133,15 +138,18 @@
         info.update(layer.feature.properties);
     }
 
+    // Feature mouseout event
     function onMouseOut(e) {
         geojsonLayer.resetStyle(e.target);
         info.update();
     }
 
+    // Feature click event
     function onClick(e) {
         myMap.fitBounds(e.target.getBounds());
     }
 
+    // Bind mouseover/mouseout/click events
     function onEachFeature(feature, layer) {
         layer.on({
             mouseover: onMouseOver,
@@ -167,17 +175,19 @@
 
     info.addTo(myMap);
 
+    // Dropdown menu - intent here is to support multiple views with this. Going to add in functionality to show candidate support percentage by ward visually here.
     var dropdown = L.control({position: 'topright'});
 
     dropdown.onAdd = function(map) {
         this._div = L.DomUtil.create('div', 'info legend');
-        this._div.innerHTML = '<select><option>1</option><option>2</option><option>3</option><option>4</option></select>';
+        this._div.innerHTML = '<select class="viewtype"><option>1</option><option>2</option><option>3</option><option>4</option></select>';
         this._div.firstChild.onmousedown = this._div.firstChild.ondblclick = L.DomEvent.stopPropagation;
         return this._div;
     }
 
     dropdown.addTo(myMap);
 
+    // Fetch the GeoJSON data
     $.ajax({
         dataType: "json",
         url: "map.geojson",
