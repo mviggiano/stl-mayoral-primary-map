@@ -5,6 +5,7 @@
     <link rel='stylesheet' href='https://unpkg.com/leaflet@1.0.3/dist/leaflet.css' />
     <script src='https://unpkg.com/leaflet@1.0.3/dist/leaflet.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src='coloring.js'></script>
     <style>
       #mapid {
         height: 600px; 
@@ -187,16 +188,14 @@
 
   // Dropdown menu - intent here is to support multiple views with this. Going to add in
   // functionality to show candidate support percentage by ward visually here.
-  const dropdown = L.control({ position: 'topright' });
-
-  dropdown.onAdd = () => {
-    this.div = L.DomUtil.create('div', 'info legend');
-    this.div.innerHTML = '<select class="viewtype"><option>1</option><option>2</option><option>3</option><option>4</option></select>';
-    this.div.firstChild.onmousedown = this.div.firstChild.ondblclick = L.DomEvent.stopPropagation;
-    return this.div;
-  };
+  const dropdown = L.dropDown({ title: 'Boop bop' });
 
   dropdown.addTo(myMap);
+
+  dropdown.on('change', (e) => {
+    // make changes here based on result in e.val
+    console.info(e.val);
+  });
 
   // Fetch the GeoJSON data
   $.ajax({
